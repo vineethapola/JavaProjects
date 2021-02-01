@@ -9,7 +9,7 @@ public class Constants {
 	static final Set<TransactionDetails> transactions = addTransactions();
 	static final String quarter = "QUARTER";
 	static final int quarterDivisor = 3;
-	static final String semiAnnual = "SEMI-ANNUAL";
+	static final String semiAnnual = "SEMI-ANNUM";
 	static final int semiAnnualDivisor = 6;
 	static final String firstQuarter = "Q1";
 	static final String secondQuarter = "Q2";
@@ -17,7 +17,7 @@ public class Constants {
 	static final String fourthQuarter = "Q4";
 	static final String firstSemiAnnual = "S1";
 	static final String secondSemiAnnual = "S2";
-	static final String annual = "ANNUAL";
+	static final String annual = "ANNUM";
 	static final int annualDivisor = 12;
 	static final int quarterOnedays = 90;
 	static final int quarterOneLeapdays = 91;

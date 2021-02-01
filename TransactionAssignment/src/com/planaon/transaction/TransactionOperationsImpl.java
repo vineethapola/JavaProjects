@@ -28,7 +28,7 @@ public class TransactionOperationsImpl implements TransactionOperations {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void sameSourceCreditDisplay(Set<TransactionDetails> transactions) throws Exception {
+	public void sameSourceCreditDisplay(Set<TransactionDetails> transactions) throws TransactionException {
 		Map<String, Double> sameSourceCreditMap = new TreeMap<>();
 		Function<? super TransactionDetails, ? extends Map<String, Double>> sameSource = td -> {
 			amount = sameSourceCreditMap.containsKey(td.getSource())
@@ -47,7 +47,7 @@ public class TransactionOperationsImpl implements TransactionOperations {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void balanceByTheEndOfAllTransactions(Set<TransactionDetails> transactions) throws Exception {
+	public void balanceByTheEndOfAllTransactions(Set<TransactionDetails> transactions) throws TransactionException {
 		balanceMap = new TreeMap<>();
 		transactions.stream().map(balanceSourceMap).collect(Collectors.toSet());
 		System.out.println("Balance for all the sources is ");
@@ -59,7 +59,7 @@ public class TransactionOperationsImpl implements TransactionOperations {
 	 */
 	@Override
 	public void balanceCalBasedOnDate(LocalDateTime localDateTime, Set<TransactionDetails> transactions)
-			throws Exception {
+			throws TransactionException {
 		balanceMap = new TreeMap<>();
 		transactions.stream()
 				.filter(td -> td.getDatedTransactionTime().isBefore(localDateTime)
@@ -74,7 +74,7 @@ public class TransactionOperationsImpl implements TransactionOperations {
 	 */
 	@Override
 	public void createBalanceMapBasedOnPeriod(Set<TransactionDetails> transactions, String period, int divisor)
-			throws Exception {
+			throws TransactionException {
 		balanceMap = new TreeMap<>();
 		transactions.forEach(td -> {
 			int quarter = td.getDatedTransactionTime().getMonthValue() % divisor == 0
@@ -118,7 +118,8 @@ public class TransactionOperationsImpl implements TransactionOperations {
 				if (sourceValues[1].equals(Constants.secondSemiAnnual))
 					noOfDaysInAPeriod = Constants.secondSemiAnnualdays;
 			} else
-				noOfDaysInAPeriod = checkYear(Integer.parseInt(sourceValues[2])) ? Constants.AnnualLeapdays : Constants.Annualdays;
+				noOfDaysInAPeriod = checkYear(Integer.parseInt(sourceValues[2])) ? Constants.AnnualLeapdays
+						: Constants.Annualdays;
 			AccountInterest accountInterest = interestFactory.getAccountType(sourceValues[3]);
 			accountInterest.getInterestRate();
 			System.out.println(source + " " + accountInterest.calulateInterest(balance, noOfDaysInAPeriod));

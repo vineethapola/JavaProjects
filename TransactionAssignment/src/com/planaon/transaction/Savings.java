@@ -6,5 +6,4 @@ public class Savings extends AccountInterest {
 	public void getInterestRate() {
 		interestRate = 4;
 	}
-
 }

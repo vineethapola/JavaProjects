@@ -57,6 +57,7 @@ public final class TransactionDetails {
 	public void setDestination(String destination) {
 		this.destination = destination;
 	}
+
 	public String getAccountType() {
 		return accountType;
 	}
@@ -74,7 +75,7 @@ public final class TransactionDetails {
 	}
 
 	public TransactionDetails(int transactionId, TransactionType transactionType, double amount, String source,
-			String destination,String accountType, String transactionTime) {
+			String destination, String accountType, String transactionTime) {
 		this.transactionId = transactionId;
 		this.transactionType = transactionType;
 		this.amount = amount;
@@ -83,6 +84,5 @@ public final class TransactionDetails {
 		this.accountType = accountType;
 		this.datedTransactionTime = LocalDateTime.parse(transactionTime, TransactionType.dateTimeFormatter);
 	}
-
 
 }
