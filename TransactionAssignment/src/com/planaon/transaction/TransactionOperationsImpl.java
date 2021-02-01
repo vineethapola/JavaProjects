@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -92,33 +91,34 @@ public class TransactionOperationsImpl implements TransactionOperations {
 			}
 			balanceMap.put(quarterKey, amount);
 		});
-		System.out.println(balanceMap);
 		getInterestRateAndCalculateBalance(balanceMap, period);
 	}
 
 	/**
 	 * Getting interest rate from factory class and calculating average balance for
-	 * each source per quarter
+	 * each source per period
 	 * 
-	 * @param quarterBalanceMap map with quarter sources in a year with balance
+	 * @param balanceMap based on period for each source
 	 */
 	void getInterestRateAndCalculateBalance(Map<String, Double> balanceMap, String period) {
+		System.out.println("Calculating balance per each " + period);
 		balanceMap.forEach((source, balance) -> {
 			String[] sourceValues = source.split(" ");
 			if (period.equalsIgnoreCase(Constants.quarter)) {
-				noOfDaysInAPeriod = (sourceValues[1].equals(Constants.firstQuarter) && checkYear(Integer.parseInt(sourceValues[2])))
-						|| sourceValues[1].equals(Constants.secondQuarter) ? 91 : 90;
+				noOfDaysInAPeriod = (sourceValues[1].equals(Constants.firstQuarter)
+						&& checkYear(Integer.parseInt(sourceValues[2])))
+						|| sourceValues[1].equals(Constants.secondQuarter) ? Constants.quarterOneLeapdays
+								: Constants.quarterOnedays;
 				if (sourceValues[1].equals(Constants.thirdQuarter) || sourceValues[1].equals(Constants.fourthQuarter))
-					noOfDaysInAPeriod = 92;
-			}
-			else if(period.equalsIgnoreCase(Constants.semiAnnual))
-			{
-				noOfDaysInAPeriod = sourceValues[1].equals(Constants.firstSemiAnnual) && checkYear(Integer.parseInt(sourceValues[2])) ? 182 : 181;
-				if(sourceValues[1].equals(Constants.secondSemiAnnual))
-					noOfDaysInAPeriod = 184;
-			}
-			else
-				noOfDaysInAPeriod = checkYear(Integer.parseInt(sourceValues[2])) ? 365:366;
+					noOfDaysInAPeriod = Constants.quarterThreeAndFourdays;
+			} else if (period.equalsIgnoreCase(Constants.semiAnnual)) {
+				noOfDaysInAPeriod = sourceValues[1].equals(Constants.firstSemiAnnual)
+						&& checkYear(Integer.parseInt(sourceValues[2])) ? Constants.firstSemiAnnualLeapdays
+								: Constants.firstSemiAnnualdays;
+				if (sourceValues[1].equals(Constants.secondSemiAnnual))
+					noOfDaysInAPeriod = Constants.secondSemiAnnualdays;
+			} else
+				noOfDaysInAPeriod = checkYear(Integer.parseInt(sourceValues[2])) ? Constants.AnnualLeapdays : Constants.Annualdays;
 			AccountInterest accountInterest = interestFactory.getAccountType(sourceValues[3]);
 			accountInterest.getInterestRate();
 			System.out.println(source + " " + accountInterest.calulateInterest(balance, noOfDaysInAPeriod));

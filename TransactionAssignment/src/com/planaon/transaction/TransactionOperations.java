@@ -28,7 +28,7 @@ public interface TransactionOperations {
 	void balanceCalBasedOnDate(LocalDateTime localDateTime, Set<TransactionDetails> transactions) throws Exception;
 
 	/**
-	 * Creating a map for calculating quarter balance for each source
+	 * Creating a map for calculating balance for each source based on period
 	 * 
 	 * @param total number of transactions
 	 */

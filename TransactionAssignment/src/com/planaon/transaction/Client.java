@@ -18,7 +18,7 @@ public class Client {
 					Constants.transactions);
 			transactionObj.createBalanceMapBasedOnPeriod(Constants.transactions,Constants.quarter,Constants.quarterDivisor);
 			transactionObj.createBalanceMapBasedOnPeriod(Constants.transactions,Constants.semiAnnual,Constants.semiAnnualDivisor);
-			//transactionObj.createBalanceMapBasedOnPeriod(Constants.transactions,Constants.quarter,Constants.quarterDivisor);
+			transactionObj.createBalanceMapBasedOnPeriod(Constants.transactions,Constants.annual,Constants.annualDivisor);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

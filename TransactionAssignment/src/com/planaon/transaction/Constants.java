@@ -17,6 +17,16 @@ public class Constants {
 	static final String fourthQuarter = "Q4";
 	static final String firstSemiAnnual = "S1";
 	static final String secondSemiAnnual = "S2";
+	static final String annual = "ANNUAL";
+	static final int annualDivisor = 12;
+	static final int quarterOnedays = 90;
+	static final int quarterOneLeapdays = 91;
+	static final int quarterThreeAndFourdays = 92;
+	static final int firstSemiAnnualdays = 181;
+	static final int firstSemiAnnualLeapdays = 182;
+	static final int secondSemiAnnualdays = 184;
+	static final int Annualdays = 365;
+	static final int AnnualLeapdays = 366;
 
 	private static Set<TransactionDetails> addTransactions() {
 		final Set<TransactionDetails> inputTransactions = new LinkedHashSet<>();
