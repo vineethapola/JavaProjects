@@ -16,12 +16,9 @@ public class Client{
 			transactionObj.balanceCalBasedOnDate(
 					LocalDateTime.parse("01/01/2020 22:30:12", TransactionType.dateTimeFormatter),
 					Constants.transactions);
-			transactionObj.createBalanceMapBasedOnPeriod(Constants.transactions, Constants.quarter,
-					Constants.quarterDivisor);
-			transactionObj.createBalanceMapBasedOnPeriod(Constants.transactions, Constants.semiAnnual,
-					Constants.semiAnnualDivisor);
-			transactionObj.createBalanceMapBasedOnPeriod(Constants.transactions, Constants.annual,
-					Constants.annualDivisor);
+			transactionObj.createBalanceMapBasedOnPeriod(Constants.transactions, Constants.quarter);
+			transactionObj.createBalanceMapBasedOnPeriod(Constants.transactions, Constants.semiAnnual);
+			transactionObj.createBalanceMapBasedOnPeriod(Constants.transactions, Constants.annual);
 		} catch (TransactionException e) {
 			logger.info(e.getMessage());
 		} 

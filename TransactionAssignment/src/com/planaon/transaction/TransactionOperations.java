@@ -32,7 +32,8 @@ public interface TransactionOperations {
 	 * 
 	 * @param total number of transactions
 	 */
-	void createBalanceMapBasedOnPeriod(Set<TransactionDetails> transactions, String period, int divisor)
+	void createBalanceMapBasedOnPeriod(Set<TransactionDetails> transactions, String period)
 			throws TransactionException;
+	
 
 }

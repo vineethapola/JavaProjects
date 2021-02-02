@@ -4,10 +4,11 @@ import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public class TransactionOperationsImpl implements TransactionOperations {
+public class TransactionOperationsImpl implements TransactionOperations  {
 	double amount;
 	int noOfDaysInAPeriod;
 	InterestFactory interestFactory = new InterestFactory();
@@ -73,14 +74,25 @@ public class TransactionOperationsImpl implements TransactionOperations {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void createBalanceMapBasedOnPeriod(Set<TransactionDetails> transactions, String period, int divisor)
+	public void createBalanceMapBasedOnPeriod(Set<TransactionDetails> transactions, String period)
 			throws TransactionException {
 		balanceMap = new TreeMap<>();
+		int divisor;
+		if(period.equalsIgnoreCase(Constants.quarter))
+		{
+			divisor = Constants.quarterDivisor;
+		}
+		else if(period.equalsIgnoreCase(Constants.semiAnnual)) {
+			divisor = Constants.semiAnnualDivisor;
+		}
+		else {
+			divisor = Constants.annualDivisor;
+		}
 		transactions.forEach(td -> {
-			int quarter = td.getDatedTransactionTime().getMonthValue() % divisor == 0
+			int periodValue = td.getDatedTransactionTime().getMonthValue() % divisor == 0
 					? (td.getDatedTransactionTime().getMonthValue() / divisor)
 					: (td.getDatedTransactionTime().getMonthValue() / divisor) + 1;
-			String quarterKey = td.getSource() + " " + period.charAt(0) + quarter + " "
+			String quarterKey = td.getSource() + " " + period.charAt(0) + periodValue + " "
 					+ td.getDatedTransactionTime().getYear() + " " + td.getAccountType();
 			if (balanceMap.containsKey(quarterKey)) {
 				amount = td.getTransactionType().equals(TransactionType.CREDIT)
@@ -101,30 +113,33 @@ public class TransactionOperationsImpl implements TransactionOperations {
 	 * @param balanceMap based on period for each source
 	 */
 	void getInterestRateAndCalculateBalance(Map<String, Double> balanceMap, String period) {
-		System.out.println("Calculating balance per each " + period);
-		balanceMap.forEach((source, balance) -> {
+		System.out.println("\nCalculating balance per each " + period +"\n");
+		BiConsumer<? super String, ? super Double> biConsumer = (source, balance) -> {
 			String[] sourceValues = source.split(" ");
+			String periodValue = sourceValues[1] ;
+			String year = sourceValues[2];
+			String accountType = sourceValues[3];
 			if (period.equalsIgnoreCase(Constants.quarter)) {
-				noOfDaysInAPeriod = (sourceValues[1].equals(Constants.firstQuarter)
-						&& checkYear(Integer.parseInt(sourceValues[2])))
-						|| sourceValues[1].equals(Constants.secondQuarter) ? Constants.quarterOneLeapdays
+				noOfDaysInAPeriod = (periodValue.equals(Constants.firstQuarter)
+						&& checkYear(Integer.parseInt(year)))
+						|| periodValue.equals(Constants.secondQuarter) ? Constants.quarterOneLeapdays
 								: Constants.quarterOnedays;
-				if (sourceValues[1].equals(Constants.thirdQuarter) || sourceValues[1].equals(Constants.fourthQuarter))
+				if (periodValue.equals(Constants.thirdQuarter) || periodValue.equals(Constants.fourthQuarter))
 					noOfDaysInAPeriod = Constants.quarterThreeAndFourdays;
 			} else if (period.equalsIgnoreCase(Constants.semiAnnual)) {
-				noOfDaysInAPeriod = sourceValues[1].equals(Constants.firstSemiAnnual)
-						&& checkYear(Integer.parseInt(sourceValues[2])) ? Constants.firstSemiAnnualLeapdays
+				noOfDaysInAPeriod = periodValue.equals(Constants.firstSemiAnnual)
+						&& checkYear(Integer.parseInt(year)) ? Constants.firstSemiAnnualLeapdays
 								: Constants.firstSemiAnnualdays;
-				if (sourceValues[1].equals(Constants.secondSemiAnnual))
+				if (periodValue.equals(Constants.secondSemiAnnual))
 					noOfDaysInAPeriod = Constants.secondSemiAnnualdays;
 			} else
-				noOfDaysInAPeriod = checkYear(Integer.parseInt(sourceValues[2])) ? Constants.AnnualLeapdays
+				noOfDaysInAPeriod = checkYear(Integer.parseInt(year)) ? Constants.AnnualLeapdays
 						: Constants.Annualdays;
-			AccountInterest accountInterest = interestFactory.getAccountType(sourceValues[3]);
+			AccountInterest accountInterest = interestFactory.getAccountType(accountType);
 			accountInterest.getInterestRate();
 			System.out.println(source + " " + accountInterest.calulateInterest(balance, noOfDaysInAPeriod));
-		});
-
+		};
+		balanceMap.forEach(biConsumer);
 	}
 
 	/**

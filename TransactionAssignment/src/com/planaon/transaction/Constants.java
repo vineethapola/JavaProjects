@@ -9,7 +9,7 @@ public class Constants {
 	static final Set<TransactionDetails> transactions = addTransactions();
 	static final String quarter = "QUARTER";
 	static final int quarterDivisor = 3;
-	static final String semiAnnual = "SEMI-ANNUM";
+	static final String semiAnnual = "SEMI-ANNUAL";
 	static final int semiAnnualDivisor = 6;
 	static final String firstQuarter = "Q1";
 	static final String secondQuarter = "Q2";
@@ -27,8 +27,12 @@ public class Constants {
 	static final int secondSemiAnnualdays = 184;
 	static final int Annualdays = 365;
 	static final int AnnualLeapdays = 366;
+	static final int defaultInterest = 1;
+	static final int currentInterest = 3;
+	static final int savingsInterest = 4;
+	static final int fixedInterest = 5;
 
-	private static Set<TransactionDetails> addTransactions() {
+	static Set<TransactionDetails> addTransactions() {
 		final Set<TransactionDetails> inputTransactions = new LinkedHashSet<>();
 		inputTransactions.add(new TransactionDetails(1, TransactionType.valueOf("CREDIT"), 10000, "A", "B", "Current",
 				"01/12/2019 22:30:45"));

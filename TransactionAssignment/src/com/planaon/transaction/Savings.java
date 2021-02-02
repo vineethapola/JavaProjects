@@ -2,8 +2,11 @@ package com.planaon.transaction;
 
 public class Savings extends AccountInterest {
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void getInterestRate() {
-		interestRate = 4;
+		interestRate = Constants.savingsInterest;
 	}
 }
