@@ -32,7 +32,9 @@ public class Constants {
 	static final int savingsInterest = 4;
 	static final int fixedInterest = 5;
 
-	static Set<TransactionDetails> addTransactions() {
+
+
+	 static Set<TransactionDetails> addTransactions() {
 		final Set<TransactionDetails> inputTransactions = new LinkedHashSet<>();
 		inputTransactions.add(new TransactionDetails(1, TransactionType.valueOf("CREDIT"), 10000, "A", "B", "Current",
 				"01/12/2019 22:30:45"));

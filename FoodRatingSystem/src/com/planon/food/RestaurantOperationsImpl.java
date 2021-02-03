@@ -11,15 +11,10 @@ public class RestaurantOperationsImpl implements RestaurantOperations {
 	public List<Restaurant> ratingsCalc(Map<String, List<String>> restaurantFeedbackMap) {
 		List<Restaurant> resList = new ArrayList<>();
 		restaurantFeedbackMap.forEach((restaurant, feedbacks) -> {
-			int goodWordOccurence = 0;
 			int calOccurence = 0;
 			for (String feedback : feedbacks) {
 				String[] feedbackArray = feedback.split(" ");
-				if (calOccurence == 0) {
-					calOccurence = occurenceCaluation(feedbackArray, Constants.goodWordsList, goodWordOccurence);
-				} else {
-					calOccurence = occurenceCaluation(feedbackArray, Constants.goodWordsList, calOccurence);
-				}
+				calOccurence = occurenceCaluation(feedbackArray, calOccurence);
 			}
 			resList.add(new Restaurant(restaurant, feedbacks, calOccurence, 0));
 		});
@@ -38,19 +33,16 @@ public class RestaurantOperationsImpl implements RestaurantOperations {
 	@Override
 	public void display(List<Restaurant> resList) {
 		for (Restaurant res : resList) {
-			System.out.println(res.getResName() + " " + res.getRank());
+			System.out.println(res.getResName() + " " + res.getRank() + " " + res.getOccurence());
 		}
 	}
 
-	int occurenceCaluation(String[] feedbackArray, List<String> goodWordsList, int goodWordOccurence) {
+	int occurenceCaluation(String[] feedbackArray, int goodWordOccurence) {
+		 List<String> goodWordsList = Constants.goodWordsList;
 		for (int i = 0; i < feedbackArray.length; i++) {
 			for (String goodWord : goodWordsList) {
 				if (goodWord.equalsIgnoreCase(feedbackArray[i])) {
-					if (goodWordOccurence == 0) {
-						goodWordOccurence = 1;
-					} else {
-						goodWordOccurence = goodWordOccurence + 1;
-					}
+					goodWordOccurence = goodWordOccurence + 1;
 					break;
 				}
 			}
