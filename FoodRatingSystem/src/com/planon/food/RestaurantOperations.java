@@ -11,7 +11,7 @@ public interface RestaurantOperations {
 	
 	default void display(List<Restaurant> resList) {
 		  for(Restaurant res: resList) {
-		  System.out.println(res.getResName()+" "+res.getRank()+" "+res.getOccurence()); }
+		  System.out.println(res.getResName()+" "+res.getRank()); }
 		 
 	}
 }

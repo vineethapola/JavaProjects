@@ -92,8 +92,8 @@ public class TransactionOperationsImpl implements TransactionOperations  {
 			int periodValue = td.getDatedTransactionTime().getMonthValue() % divisor == 0
 					? (td.getDatedTransactionTime().getMonthValue() / divisor)
 					: (td.getDatedTransactionTime().getMonthValue() / divisor) + 1;
-			String quarterKey = td.getSource() + " " + period.charAt(0) + periodValue + " "
-					+ td.getDatedTransactionTime().getYear() + " " + td.getAccountType();
+			String quarterKey = td.getSource() + "~" + period.charAt(0) + periodValue + "~"
+					+ td.getDatedTransactionTime().getYear() + "~" + td.getAccountType();
 			if (balanceMap.containsKey(quarterKey)) {
 				amount = td.getTransactionType().equals(TransactionType.CREDIT)
 						? balanceMap.get(quarterKey) + td.getAmount()
@@ -115,7 +115,7 @@ public class TransactionOperationsImpl implements TransactionOperations  {
 	void getInterestRateAndCalculateBalance(Map<String, Double> balanceMap, String period) {
 		System.out.println("\nCalculating balance per each " + period +"\n");
 		BiConsumer<? super String, ? super Double> biConsumer = (source, balance) -> {
-			String[] sourceValues = source.split(" ");
+			String[] sourceValues = source.split("~");
 			String periodValue = sourceValues[1] ;
 			String year = sourceValues[2];
 			String accountType = sourceValues[3];
@@ -137,7 +137,7 @@ public class TransactionOperationsImpl implements TransactionOperations  {
 						: Constants.Annualdays;
 			AccountInterest accountInterest = interestFactory.getAccountType(accountType);
 			accountInterest.getInterestRate();
-			System.out.println(source + " " + accountInterest.calulateInterest(balance, noOfDaysInAPeriod));
+			System.out.println(source.replace("~", " ") + " " + accountInterest.calulateInterest(balance, noOfDaysInAPeriod));
 		};
 		balanceMap.forEach(biConsumer);
 	}

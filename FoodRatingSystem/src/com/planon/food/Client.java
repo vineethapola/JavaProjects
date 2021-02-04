@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
-public class FoodRatingMain {
+public class Client {
 
-	static Logger logger = Logger.getLogger(FoodRatingMain.class.getName());
+	static Logger logger = Logger.getLogger(Client.class.getName());
 
 	public static void main(String[] args) {
 
@@ -28,7 +28,7 @@ public class FoodRatingMain {
 				// get feedback from user
 				// get feedbacks array/list and then append the new input.
 				logger.info("Enter Feedback");
-				String feedback = in.readLine();
+				String feedback = in.readLine().substring(0, 249);
 
 				if (restaurantFeedbackMap.containsKey(name)) {
 					List<String> feedbacksList = restaurantFeedbackMap.get(name);
