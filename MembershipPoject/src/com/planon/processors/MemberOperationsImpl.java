@@ -5,12 +5,10 @@ import java.util.Set;
 import java.util.logging.Logger;
 
 import com.planon.entities.MemberDetails;
-import com.planon.entities.MemberOperations;
-import com.planon.entities.MemberShipFactory;
-import com.planon.entities.MemberShipServices;
 import com.planon.entities.Services;
-import com.planon.entities.TopUpServiceFactory;
-import com.planon.entities.TopUpServices;
+import com.planon.util.MemberOperations;
+import com.planon.util.MemberShipServices;
+import com.planon.util.TopUpServices;
 
 /**
  * Class containing all the implementations of MemberOperations Interface and the methods specific to this class
