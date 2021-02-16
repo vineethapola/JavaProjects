@@ -4,14 +4,15 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 
-import com.planon.entities.MemberDetails;
+import com.planon.entities.Member;
 import com.planon.entities.Services;
 import com.planon.util.MemberOperations;
 import com.planon.util.MemberShipServices;
 import com.planon.util.TopUpServices;
 
 /**
- * Class containing all the implementations of MemberOperations Interface and the methods specific to this class
+ * Class containing all the implementations of MemberOperations Interface and
+ * the methods specific to this class
  *
  */
 public class MemberOperationsImpl implements MemberOperations {
@@ -23,15 +24,16 @@ public class MemberOperationsImpl implements MemberOperations {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void settingServicesDetails(Set<MemberDetails> members) {
+	public void settingServicesDetails(Set<Member> members) {
 		members.forEach(member -> {
 			MemberShipServices memberShipType = memberShipfactory
 					.getMemberShipDetails(member.getMemberShip().toString());
 			member.setCost(memberShipType.getCost());
 			member.setServicesnames(memberShipType.getServicesNames());
-			TopUpServices topUpServices = topUpServiceFactory.getTopUpServicesDetails(member.getMemberShip().toString());
+			TopUpServices topUpServices = topUpServiceFactory
+					.getTopUpServicesDetails(member.getMemberShip().toString());
 			List<String> selectedTopUpServices = topUpServices.getTopUpServicesNames();
-			if (! selectedTopUpServices.isEmpty())
+			if (!selectedTopUpServices.isEmpty())
 				appendingCostandServicesDetails(member, selectedTopUpServices);
 		});
 	}
@@ -40,7 +42,7 @@ public class MemberOperationsImpl implements MemberOperations {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void fetchMonthlyBill(Set<MemberDetails> members) {
+	public void fetchMonthlyBill(Set<Member> members) {
 		members.forEach(member -> {
 			int dayOfMonth = member.getMemberShipStartDate().getDayOfMonth();
 			float totalDays = member.getMemberShipStartDate().getMonth().maxLength();
@@ -52,14 +54,15 @@ public class MemberOperationsImpl implements MemberOperations {
 
 	/**
 	 * Method to append selected top-up services and cost to a member
+	 * 
 	 * @param member
 	 * @param selectedTopUpServices
 	 */
-	private void appendingCostandServicesDetails(MemberDetails member, List<String> selectedTopUpServices) {
+	private void appendingCostandServicesDetails(Member member, List<String> selectedTopUpServices) {
 		List<String> appendServices = member.getServicesnames();
-		int cost = member.getCost() ;
-		for(String service: selectedTopUpServices) {
-			Services serviceName = Services.valueOf(service.toUpperCase().replaceAll("\\s", "_"));	
+		int cost = member.getCost();
+		for (String service : selectedTopUpServices) {
+			Services serviceName = Services.valueOf(service.toUpperCase().replaceAll("\\s", "_"));
 			appendServices.add(serviceName.getServicename());
 			cost = cost + serviceName.getCost();
 		}

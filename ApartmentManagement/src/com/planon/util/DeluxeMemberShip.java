@@ -21,7 +21,7 @@ public class DeluxeMemberShip extends BasicMemberShip {
 		servicesNames.add(Services.FOUR_WHEELER_PARKING.getServicename());
 		return servicesNames;
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
