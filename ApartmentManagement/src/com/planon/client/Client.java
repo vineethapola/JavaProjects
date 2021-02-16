@@ -9,6 +9,12 @@ import com.planon.entities.MemberShip;
 import com.planon.processors.MemberOperationsImpl;
 import com.planon.util.MemberOperations;
 
+/**
+ * 
+ * client class contains static list of members and function calls to the required methods
+ *
+ */
+
 public class Client {
 
 	private static final Logger log = Logger.getLogger(Client.class.getName());

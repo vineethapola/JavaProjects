@@ -50,6 +50,11 @@ public class MemberOperationsImpl implements MemberOperations {
 		});
 	}
 
+	/**
+	 * Method to append selected top-up services and cost to a member
+	 * @param member
+	 * @param selectedTopUpServices
+	 */
 	private void appendingCostandServicesDetails(MemberDetails member, List<String> selectedTopUpServices) {
 		List<String> appendServices = member.getServicesnames();
 		int cost = member.getCost() ;

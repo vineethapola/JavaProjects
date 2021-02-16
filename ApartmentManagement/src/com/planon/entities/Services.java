@@ -1,7 +1,7 @@
 package com.planon.entities;
 
 /**
- * Enum with list of service constants and also return the name and cost of the service
+ * Enum with list of services and also returns the name and cost of the service
  *
  */
 public enum Services {
