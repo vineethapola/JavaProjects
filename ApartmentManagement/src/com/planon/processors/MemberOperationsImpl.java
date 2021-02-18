@@ -38,6 +38,13 @@ public class MemberOperationsImpl implements MemberOperations {
 			int memberId = scanner.nextInt();
 			if (memberId == 0)
 				break;
+			while(true)
+			{
+				if(!membersData.containsKey(memberId))
+					break;
+				log.info("The member id you have entered already exists, please enter a different member id");
+				memberId = scanner.nextInt();
+			}
 			log.info("Enter member name");
 			String name = scanner.next();
 			log.info("Choose any of the below membership\n1. BASIC \n2. DELUXE \n3. ELITE");
