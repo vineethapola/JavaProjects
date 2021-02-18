@@ -2,7 +2,6 @@ package com.planon.client;
 
 import java.util.List;
 
-import com.planon.entities.Service;
 import com.planon.processors.ServiceFactory;
 
 /**

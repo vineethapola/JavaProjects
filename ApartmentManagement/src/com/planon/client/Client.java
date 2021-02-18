@@ -8,8 +8,8 @@ import com.planon.processors.MemberOperationsImpl;
 
 /**
  * 
- * client class contains static list of members and function calls to the
- * required methods
+ * Class is used to register new users and for setting the services details and
+ * fetching the monthly bill
  *
  */
 

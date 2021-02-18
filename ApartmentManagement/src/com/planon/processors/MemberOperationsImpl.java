@@ -11,10 +11,10 @@ import java.util.logging.Logger;
 
 import com.planon.client.MemberOperations;
 import com.planon.client.MemberShipServices;
+import com.planon.client.Service;
 import com.planon.client.TopUpServices;
 import com.planon.entities.ApartmentMember;
 import com.planon.entities.MemberShip;
-import com.planon.entities.Service;
 
 /**
  * Class containing all the implementations of MemberOperations Interface and
@@ -28,6 +28,9 @@ public class MemberOperationsImpl implements MemberOperations {
 	private static final Logger log = Logger.getLogger(MemberOperationsImpl.class.getName());
 	Scanner scanner = new Scanner(System.in);
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Map<Integer, ApartmentMember> userRegistration() {
 		final Map<Integer, ApartmentMember> membersData = new HashMap<>();
@@ -38,9 +41,8 @@ public class MemberOperationsImpl implements MemberOperations {
 			int memberId = scanner.nextInt();
 			if (memberId == 0)
 				break;
-			while(true)
-			{
-				if(!membersData.containsKey(memberId))
+			while (true) {
+				if (!membersData.containsKey(memberId))
 					break;
 				log.info("The member id you have entered already exists, please enter a different member id");
 				memberId = scanner.nextInt();
@@ -89,7 +91,7 @@ public class MemberOperationsImpl implements MemberOperations {
 	 */
 	@Override
 	public void settingTopUpServicesDetails(Map<Integer, ApartmentMember> membersData) {
-		log.info("Enter a member id to add top up services");
+		log.info("Enter member id to add top up services");
 		int memberId = scanner.nextInt();
 		/**
 		 * Checking if the given member id is valid or not
@@ -114,29 +116,32 @@ public class MemberOperationsImpl implements MemberOperations {
 				member.setCost(cost);
 			}
 		}
+		else {
+			log.info("The member id you have entered does not exist.");
+		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void fetchMonthlyBill(Map<Integer, ApartmentMember> membersData) {
-		log.info("Enter a month for calculating bill");
-		String monthName = scanner.next();
-		/**
-		 * Checking if the given member id is valid or not
-		 */
 		membersData.forEach((id, member) -> {
 			LocalDate membershipStartDate = member.getMemberShipStartDate();
+			LocalDate currentDate = java.time.LocalDate.now();
+		
 			/**
-			 * Condition to check whether membership started in the given month, if yes
+			 * Condition to check whether membership started in the current month, if yes
 			 * calculate bill for effective used days, else return full month bill
 			 */
-			if(membershipStartDate.getMonth().toString().equalsIgnoreCase(monthName)) {
+			if (membershipStartDate.getMonthValue() == currentDate.getMonthValue()) {
 				int dayOfMonth = membershipStartDate.getDayOfMonth();
 				int totalDays = membershipStartDate.getMonth().maxLength();
 				int usedDays = (totalDays - dayOfMonth) + 1;
 				BigDecimal billAmount = BigDecimal.valueOf((member.getCost() / totalDays) * usedDays);
-				log.info("Bill amount for " + monthName + " is " + billAmount.toString());
+				log.info("Bill amount for "+member.getMemberName()+" for "+ currentDate.getMonth() + " month is " + billAmount.toString());
 			} else {
-				log.info("Bill amount for " + monthName + " is " + Double.toString(member.getCost()));
+				log.info("Bill amount for "+member.getMemberName()+" for " + currentDate.getMonth()+ " month is " + Double.toString(member.getCost()));
 			}
 		});
 	}

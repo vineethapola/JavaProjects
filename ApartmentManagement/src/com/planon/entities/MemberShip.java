@@ -6,9 +6,15 @@ package com.planon.entities;
  */
 public enum MemberShip {
 	/** This membership contains maintainence, security */
-	BASIC, 
-	/** This membership contains basic membership services, two wheeler parking and four wheeler parking */
+	BASIC,
+	/**
+	 * This membership contains basic membership services, two wheeler parking and
+	 * four wheeler parking services
+	 */
 	DELUXE,
-	/** This membership contains deluxe membership services, gym, swimming pool and club*/
+	/**
+	 * This membership contains deluxe membership services, gym, swimming pool and
+	 * club services
+	 */
 	ELITE;
 }

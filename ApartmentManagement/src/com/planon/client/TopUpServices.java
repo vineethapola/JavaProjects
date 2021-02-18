@@ -13,7 +13,7 @@ public interface TopUpServices {
 	Scanner scanner = new Scanner(System.in);
 
 	/**
-	 * Method to calculate the additional top up services selected by the user
+	 * Method to get the additional top up services selected by the user
 	 * 
 	 * @return list of selected top up services details
 	 */

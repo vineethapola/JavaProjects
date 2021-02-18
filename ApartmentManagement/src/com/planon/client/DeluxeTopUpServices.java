@@ -2,6 +2,12 @@ package com.planon.client;
 
 import java.util.logging.Logger;
 
+/**
+ * Class to display the different top up services that are available for a user
+ * to choose from, for membership type "DELUXE"
+ *
+ */
+
 public class DeluxeTopUpServices extends EliteTopUpServices {
 	private static final Logger log = Logger.getLogger(DeluxeTopUpServices.class.getName());
 

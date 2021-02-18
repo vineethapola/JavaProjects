@@ -53,7 +53,6 @@ public class ApartmentMember {
 		this.memberName = memberName;
 		this.memberShip = memberShip;
 		this.memberShipStartDate = LocalDate.parse(memberShipStartDate);
-
 	}
 
 	@Override

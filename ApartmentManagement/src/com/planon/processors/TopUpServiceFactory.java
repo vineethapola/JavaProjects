@@ -8,16 +8,21 @@ import com.planon.client.EliteTopUpServices;
 import com.planon.client.TopUpServices;
 import com.planon.entities.MemberShip;
 
+/**
+ * Class to get the TopUpServices object
+ *
+ */
 public class TopUpServiceFactory {
 	static Logger log = Logger.getLogger(MemberShip.class.getName());
+
 	/**
-	 * Method to get the type of TopUpService object
+	 * Method to get the type of TopUpServices object
 	 * 
 	 * @param memberShip
 	 * @return TopUpServices object
 	 */
 	public TopUpServices getTopUpServicesDetails(MemberShip memberShip) {
-		
+
 		switch (memberShip) {
 		case BASIC:
 			return new BasicTopUpServices();
