@@ -1,11 +1,10 @@
-package com.planon.util;
+package com.planon.client;
 
 import java.util.logging.Logger;
 
-import com.planon.client.Client;
 
 public class BasicTopUpServices extends DeluxeTopUpServices {
-	private static final Logger log = Logger.getLogger(Client.class.getName());
+	private static final Logger log = Logger.getLogger(BasicTopUpServices.class.getName());
 
 	/**
 	 * Default Constructor from which member with membership type "BASIC" can choose

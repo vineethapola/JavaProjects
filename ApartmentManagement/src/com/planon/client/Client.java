@@ -1,9 +1,10 @@
 package com.planon.client;
 
+import java.util.Map;
 import java.util.logging.Logger;
 
+import com.planon.entities.ApartmentMember;
 import com.planon.processors.MemberOperationsImpl;
-import com.planon.util.MemberOperations;
 
 /**
  * 
@@ -17,11 +18,12 @@ public class Client {
 	private static final Logger log = Logger.getLogger(Client.class.getName());
 
 	public static void main(String[] args) {
-		MemberOperations operations = new MemberOperationsImpl();
 		try {
-			operations.settingServicesDetails(MemberData.members);
-			log.info(MemberData.members.toString());
-			operations.fetchMonthlyBill(MemberData.members);
+			MemberOperations operations = new MemberOperationsImpl();
+			Map<Integer, ApartmentMember> membersData = operations.userRegistration();
+			operations.settingServicesDetails(membersData);
+			operations.settingTopUpServicesDetails(membersData);
+			operations.fetchMonthlyBill(membersData);
 		} catch (Exception e) {
 			log.info(e.getMessage());
 		}

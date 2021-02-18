@@ -1,4 +1,4 @@
-package com.planon.util;
+package com.planon.client;
 
 import java.util.logging.Logger;
 

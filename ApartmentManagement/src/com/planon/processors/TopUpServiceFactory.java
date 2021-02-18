@@ -1,25 +1,35 @@
 package com.planon.processors;
 
+import java.util.logging.Logger;
+
+import com.planon.client.BasicTopUpServices;
+import com.planon.client.DeluxeTopUpServices;
+import com.planon.client.EliteTopUpServices;
+import com.planon.client.TopUpServices;
 import com.planon.entities.MemberShip;
-import com.planon.util.BasicTopUpServices;
-import com.planon.util.DeluxeTopUpServices;
-import com.planon.util.EliteTopUpServices;
-import com.planon.util.TopUpServices;
 
 public class TopUpServiceFactory {
+	static Logger log = Logger.getLogger(MemberShip.class.getName());
 	/**
 	 * Method to get the type of TopUpService object
 	 * 
-	 * @param memberShipType
+	 * @param memberShip
 	 * @return TopUpServices object
 	 */
-	public TopUpServices getTopUpServicesDetails(String memberShipType) {
-		if (MemberShip.BASIC.equals(MemberShip.valueOf(memberShipType)))
+	public TopUpServices getTopUpServicesDetails(MemberShip memberShip) {
+		
+		switch (memberShip) {
+		case BASIC:
 			return new BasicTopUpServices();
-		else if (MemberShip.DELUXE.equals(MemberShip.valueOf(memberShipType)))
+		case DELUXE:
 			return new DeluxeTopUpServices();
-		else
+		case ELITE:
 			return new EliteTopUpServices();
+		default:
+			log.info("Topup service not found");
+			break;
+		}
+		return null;
 	}
 
 }

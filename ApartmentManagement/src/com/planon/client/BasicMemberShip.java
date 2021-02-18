@@ -1,9 +1,9 @@
-package com.planon.util;
+package com.planon.client;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import com.planon.entities.Services;
+import com.planon.entities.MaintainanceService;
+import com.planon.entities.SecurityService;
 
 /**
  * This class sets the services names and cost details for membership "BASIC"
@@ -11,6 +11,8 @@ import com.planon.entities.Services;
  */
 
 public class BasicMemberShip implements MemberShipServices {
+	SecurityService securityServiceObj = new SecurityService();
+	MaintainanceService maintainanceServiceObj = new MaintainanceService();
 
 	/**
 	 * {@inheritDoc}
@@ -19,18 +21,9 @@ public class BasicMemberShip implements MemberShipServices {
 	public List<String> getServicesNames() {
 		List<String> servicesNames;
 		servicesNames = new ArrayList<>();
-		servicesNames.add(Services.MAINTAINENCE.getServicename());
-		servicesNames.add(Services.SECURITY.getServicename());
+		servicesNames.add(securityServiceObj.getServicename());
+		servicesNames.add(maintainanceServiceObj.getServicename());
 		return servicesNames;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public int getCost() {
-		int cost;
-		cost = Services.MAINTAINENCE.getCost() + Services.SECURITY.getCost();
-		return cost;
-	}
 }
