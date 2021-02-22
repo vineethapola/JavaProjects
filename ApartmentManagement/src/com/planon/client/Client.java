@@ -48,7 +48,7 @@ public class Client {
 			}
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.info(e.getMessage() + e.getStackTrace());
 		}
 	}
 
