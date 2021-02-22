@@ -36,6 +36,12 @@ public class ApartmentMember {
 		return cost;
 	}
 
+	/**
+	 * Setter method to set the cost for a member based on the membership and
+	 * additional services chosen
+	 * 
+	 * @param cost
+	 */
 	public void setCost(double cost) {
 		this.cost = cost;
 	}
@@ -44,10 +50,24 @@ public class ApartmentMember {
 		return servicesnames;
 	}
 
+	/**
+	 * Setter method to set the services names for a member based on the membership
+	 * and additional services chosen
+	 * 
+	 * @param list
+	 */
 	public void setServicesnames(List<String> list) {
 		this.servicesnames = list;
 	}
 
+	/**
+	 * Constructor to set the below values for a apartment member on registration
+	 * 
+	 * @param memberId
+	 * @param memberName
+	 * @param memberShip
+	 * @param memberShipStartDate
+	 */
 	public ApartmentMember(int memberId, String memberName, MemberShip memberShip, String memberShipStartDate) {
 		this.memberId = memberId;
 		this.memberName = memberName;

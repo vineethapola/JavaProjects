@@ -8,7 +8,7 @@ import java.util.logging.Logger;
 /**
  * Interface to get additional top up service details chosen by the user
  */
-public interface TopUpServices {
+public class TopUpServices {
 	Logger log = Logger.getLogger(TopUpServices.class.getName());
 	Scanner scanner = new Scanner(System.in);
 
@@ -17,14 +17,14 @@ public interface TopUpServices {
 	 * 
 	 * @return list of selected top up services details
 	 */
-	default List<String> getTopUpServicesNames() {
+	public List<String> getTopUpServicesNames() {
 		List<String> services = new ArrayList<>();
 		log.info("Choose any/none of the above top up services\nPress enter to exit");
 		while (true) {
 			String serviceName = scanner.nextLine();
 			if ("".equals(serviceName) || null == serviceName)
 				break;
-			services.add(serviceName.toUpperCase());
+			services.add(serviceName);
 		}
 		return services;
 	}

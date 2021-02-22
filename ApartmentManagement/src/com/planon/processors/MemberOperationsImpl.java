@@ -2,12 +2,14 @@ package com.planon.processors;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import com.planon.client.MemberOperations;
 import com.planon.client.MemberShipServices;
@@ -23,8 +25,8 @@ import com.planon.entities.MemberShip;
  */
 public class MemberOperationsImpl implements MemberOperations {
 	MemberShipFactory memberShipfactory = new MemberShipFactory();
-	TopUpServiceFactory topUpServiceFactory = new TopUpServiceFactory();
 	ServiceFactory serviceFactory = new ServiceFactory();
+	TopUpServices topupService = new TopUpServices();
 	private static final Logger log = Logger.getLogger(MemberOperationsImpl.class.getName());
 	Scanner scanner = new Scanner(System.in);
 
@@ -35,9 +37,8 @@ public class MemberOperationsImpl implements MemberOperations {
 	public Map<Integer, ApartmentMember> userRegistration() {
 		final Map<Integer, ApartmentMember> membersData = new HashMap<>();
 		MemberShip memberShip = null;
-		log.info("Register a new user\nPress 0 to exit");
 		while (true) {
-			log.info("Enter member id");
+			log.info("Register a new user\nPress 0 to exit\nEnter member id");
 			int memberId = scanner.nextInt();
 			if (memberId == 0)
 				break;
@@ -92,31 +93,35 @@ public class MemberOperationsImpl implements MemberOperations {
 	@Override
 	public void settingTopUpServicesDetails(Map<Integer, ApartmentMember> membersData) {
 		log.info("Enter member id to add top up services");
-		int memberId = scanner.nextInt();
-		/**
-		 * Checking if the given member id is valid or not
-		 */
-		if (membersData.containsKey(memberId)) {
+		int memberId = checkingIfMemberExists(membersData);
+		if (memberId != -1) {
 			ApartmentMember member = membersData.get(memberId);
-			TopUpServices topUpServices = topUpServiceFactory.getTopUpServicesDetails(member.getMemberShip());
-			List<String> selectedTopUpServices = topUpServices.getTopUpServicesNames();
-			/**
-			 * Checking if the user has selected additional top up services, if yes adding
-			 * the new services and the cost to the existing services and cost
-			 */
-			if (!selectedTopUpServices.isEmpty()) {
-				double cost = member.getCost();
-				List<String> memberServices = member.getServicesnames();
-				for (String serviceName : selectedTopUpServices) {
-					Service service = serviceFactory.getServiceDetails(serviceName);
-					memberServices.add(service.getServicename());
-					cost = cost + service.getCost();
+			List<String> memberServices = member.getServicesnames();
+			List<String> allServicesList = Arrays.asList("Club", "Four Wheeler Parking", "Gym", "Maintainance",
+					"Power BackUp", "Second Car Parking", "Security", "Swimming Pool", "Two Wheeler Parking");
+			List<String> removedServicesList = allServicesList.stream()
+					.filter(service -> !memberServices.contains(service)).collect(Collectors.toList());
+			if (removedServicesList.isEmpty())
+				log.info("There are no additional services available for you to choose");
+			else {
+				removedServicesList.stream().forEach(log::info);
+				List<String> selectedTopUpServices = topupService.getTopUpServicesNames();
+				/**
+				 * Checking if the user has selected additional top up services, if yes adding
+				 * the new services and the cost to the existing services and cost
+				 */
+				if (!selectedTopUpServices.isEmpty()) {
+					double cost = member.getCost();
+					for (String serviceName : selectedTopUpServices) {
+						Service service = serviceFactory.getServiceDetails(serviceName);
+						memberServices.add(service.getServicename());
+						cost = cost + service.getCost();
+					}
+					member.setServicesnames(memberServices);
+					member.setCost(cost);
 				}
-				member.setServicesnames(memberServices);
-				member.setCost(cost);
 			}
-		}
-		else {
+		} else {
 			log.info("The member id you have entered does not exist.");
 		}
 	}
@@ -126,10 +131,12 @@ public class MemberOperationsImpl implements MemberOperations {
 	 */
 	@Override
 	public void fetchMonthlyBill(Map<Integer, ApartmentMember> membersData) {
-		membersData.forEach((id, member) -> {
+		log.info("Enter member id to fetch the month bill");
+		int memberId = checkingIfMemberExists(membersData);
+		if (memberId != -1) {
+			ApartmentMember member = membersData.get(memberId);
 			LocalDate membershipStartDate = member.getMemberShipStartDate();
 			LocalDate currentDate = java.time.LocalDate.now();
-		
 			/**
 			 * Condition to check whether membership started in the current month, if yes
 			 * calculate bill for effective used days, else return full month bill
@@ -139,10 +146,31 @@ public class MemberOperationsImpl implements MemberOperations {
 				int totalDays = membershipStartDate.getMonth().maxLength();
 				int usedDays = (totalDays - dayOfMonth) + 1;
 				BigDecimal billAmount = BigDecimal.valueOf((member.getCost() / totalDays) * usedDays);
-				log.info("Bill amount for "+member.getMemberName()+" for "+ currentDate.getMonth() + " month is " + billAmount.toString());
+				log.info("Bill amount for " + member.getMemberName() + " for " + currentDate.getMonth() + " month is "
+						+ billAmount);
 			} else {
-				log.info("Bill amount for "+member.getMemberName()+" for " + currentDate.getMonth()+ " month is " + Double.toString(member.getCost()));
+				log.info("Bill amount for " + member.getMemberName() + " for " + currentDate.getMonth() + " month is "
+						+ member.getCost());
 			}
-		});
+		} else {
+			log.info("The member id you have entered does not exist.");
+		}
 	}
+
+	/**
+	 * Method to check if the user is present or not
+	 * 
+	 * @param membersData
+	 * @return memberId if user exists else return -1
+	 */
+	private int checkingIfMemberExists(Map<Integer, ApartmentMember> membersData) {
+		int memberId = scanner.nextInt();
+		/**
+		 * Checking if the given member id is valid or not
+		 */
+		if (membersData.containsKey(memberId))
+			return memberId;
+		return -1;
+	}
+
 }
